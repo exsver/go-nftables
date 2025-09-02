@@ -17,6 +17,12 @@ const (
 	ChainPolicyContinue = "continue"
 )
 
+const (
+	ChainTypeFilter = "filter"
+	ChainTypeNat    = "nat"
+	ChainTypeRoute  = "route"
+)
+
 type Chain struct {
 	Name     string
 	Type     string
@@ -24,4 +30,31 @@ type Chain struct {
 	Priority int
 	Policy   string
 	Table    *Table
+}
+
+func NewChain(name, hook string, table *Table) *Chain {
+	return &Chain{
+		Name:     name,
+		Type:     ChainTypeFilter,
+		Hook:     hook,
+		Priority: 0,
+		Policy:   ChainPolicyAccept,
+		Table:    table,
+	}
+}
+
+func (c *Chain) SetType(chainType string) {
+	c.Type = chainType
+}
+
+func (c *Chain) SetHook(chainHook string) {
+	c.Hook = chainHook
+}
+
+func (c *Chain) SetPriority(chainPriority int) {
+	c.Priority = chainPriority
+}
+
+func (c *Chain) SetPolicy(chainPolicy string) {
+	c.Policy = chainPolicy
 }
