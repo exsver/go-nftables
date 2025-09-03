@@ -23,6 +23,10 @@ type Config struct {
 }
 
 func NewConfig(chain *Chain) (*Config, error) {
+	if chain == nil {
+		return nil, errors.New("chain is nil")
+	}
+
 	return &Config{
 		Path:   "/usr/sbin/nft",
 		Chain:  chain,
