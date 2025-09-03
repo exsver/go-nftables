@@ -50,7 +50,9 @@ func (r *Rule) GenArgs() ([]string, error) {
 	}
 
 	if r.Protocol != "" {
-		args = append(args, "ip", "protocol", r.Protocol)
+		if r.SPort == "" && r.DPort == "" {
+			args = append(args, "ip", "protocol", r.Protocol)
+		}
 	}
 
 	if r.SPort != "" {
@@ -84,7 +86,7 @@ func (r *Rule) GenArgs() ([]string, error) {
 	}
 
 	if r.Comment != "" {
-		args = append(args, "comment", r.Comment)
+		args = append(args, "comment", fmt.Sprintf("\"%s\"", strings.ReplaceAll(r.Comment, "\"", "'")))
 	}
 
 	return args, nil
