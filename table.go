@@ -13,3 +13,10 @@ type Table struct {
 	Name   string
 	Family string
 }
+
+func NewTable(name, family string) *Table {
+	return &Table{
+		Name:   name,
+		Family: family,
+	}
+}
