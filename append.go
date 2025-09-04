@@ -8,7 +8,7 @@ func (c *Config) Append(rule *Rule) error {
 		return err
 	}
 
-	args := []string{"add", "rule", c.Chain.Type, c.Chain.Name}
+	args := []string{"add", "rule", c.Chain.Table.Family, c.Chain.Table.Name, c.Chain.Name}
 	args = append(args, ruleArgs...)
 
 	// logger
