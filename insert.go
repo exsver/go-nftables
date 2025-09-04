@@ -15,7 +15,7 @@ func (c *Config) Insert(rule *Rule, num int) error {
 	args = append(args, ruleArgs...)
 
 	// logger
-	c.Logger.Printf("Appending nftables rule '%s' to chain '%s'", strings.Join(ruleArgs, " "), c.Chain.Name)
+	c.Logger.Printf("Inserting nftables rule '%s' to chain '%s'", strings.Join(ruleArgs, " "), c.Chain.Name)
 
 	return c.do(args)
 }

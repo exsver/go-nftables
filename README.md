@@ -61,7 +61,7 @@ func main() {
 
 	// Exec nftables
 	for _, rule := range rules {
-		err = config.Append(&rule)
+		err = config.AddRule(&rule)
 		if err != nil {
 			log.Fatal(err)
 		}

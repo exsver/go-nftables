@@ -12,6 +12,8 @@ func TestRule_GenArgs(t *testing.T) {
 		Protocol string
 		SPort    string
 		DPort    string
+		SetSAddr string
+		SetDAddr string
 		NoTrack  bool
 		Jump     string
 		Comment  string
@@ -85,6 +87,48 @@ func TestRule_GenArgs(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "set-daddr-notrack",
+			fields: fields{
+				DAddr:    "100.100.100.100",
+				SetDAddr: "127.100.100.100",
+				NoTrack:  true,
+			},
+			want: []string{
+				"ip", "daddr", "100.100.100.100",
+				"ip", "daddr", "set", "127.100.100.100",
+				"notrack",
+			},
+			wantErr: false,
+		},
+		{
+			name: "set-saddr-notrack",
+			fields: fields{
+				SAddr:    "127.100.100.100",
+				SetSAddr: "100.100.100.100",
+				NoTrack:  true,
+			},
+			want: []string{
+				"ip", "saddr", "127.100.100.100",
+				"ip", "saddr", "set", "100.100.100.100",
+				"notrack",
+			},
+			wantErr: false,
+		},
+		{
+			name: "set-daddr-comment",
+			fields: fields{
+				DAddr:    "100.100.100.100",
+				SetDAddr: "127.100.100.100",
+				Comment:  "Rewrite destination IP address to 127.100.100.100",
+			},
+			want: []string{
+				"ip", "daddr", "100.100.100.100",
+				"ip", "daddr", "set", "127.100.100.100",
+				"comment", "\"Rewrite destination IP address to 127.100.100.100\"",
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -95,6 +139,8 @@ func TestRule_GenArgs(t *testing.T) {
 				Protocol: tt.fields.Protocol,
 				SPort:    tt.fields.SPort,
 				DPort:    tt.fields.DPort,
+				SetSAddr: tt.fields.SetSAddr,
+				SetDAddr: tt.fields.SetDAddr,
 				NoTrack:  tt.fields.NoTrack,
 				Jump:     tt.fields.Jump,
 				Comment:  tt.fields.Comment,

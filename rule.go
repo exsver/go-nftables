@@ -29,6 +29,10 @@ type Rule struct {
 	SPort string
 	// DPort - nft dport option
 	DPort string
+	// SetSAddr - used for rewriting ip saddr
+	SetSAddr string
+	// SetDAddr - used for rewriting ip daddr
+	SetDAddr string
 	// NoTrack - disable conntrack
 	NoTrack bool
 	// Jump - action
@@ -73,6 +77,14 @@ func (r *Rule) GenArgs() ([]string, error) {
 		}
 	}
 
+	if r.SetSAddr != "" {
+		args = append(args, "ip", "saddr", "set", r.SetSAddr)
+	}
+
+	if r.SetDAddr != "" {
+		args = append(args, "ip", "daddr", "set", r.SetDAddr)
+	}
+
 	if r.NoTrack {
 		args = append(args, "notrack")
 	}
@@ -81,8 +93,8 @@ func (r *Rule) GenArgs() ([]string, error) {
 		args = append(args, r.Jump)
 	}
 
-	if !r.NoTrack && r.Jump == "" {
-		return nil, fmt.Errorf("jump or notrack must be set")
+	if !r.NoTrack && r.Jump == "" && r.SetSAddr == "" && r.SetDAddr == "" {
+		return nil, fmt.Errorf("rule.Jump, rule.SetSAddr, rule.SetDAddr or notrack must be set")
 	}
 
 	if r.Comment != "" {
