@@ -11,7 +11,7 @@ func (c *Config) Insert(rule *Rule, num int) error {
 		return err
 	}
 
-	args := []string{"insert", "rule", c.Chain.Type, c.Chain.Name, "position", strconv.Itoa(num)}
+	args := []string{"insert", "rule", c.Chain.Table.Family, c.Chain.Table.Name, c.Chain.Name, "position", strconv.Itoa(num)}
 	args = append(args, ruleArgs...)
 
 	// logger
